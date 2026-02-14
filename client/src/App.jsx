@@ -3,7 +3,7 @@ import { Route,Routes } from 'react-router-dom'
 import Login from './pages/Login'
 import HomePage from './pages/HomePage'
 import EmailVerify from './pages/EmailVerify'
-import ResetPassword from './pages/resetPassword'
+import ResetPassword from './pages/ResetPassword'
 import { ToastContainer } from 'react-toastify'
 
 const App = () => {
@@ -14,7 +14,7 @@ const App = () => {
           <Route path='/' element={<HomePage/>} />
           <Route path='/login' element={<Login />} />
           <Route path="/emailverify" element={<EmailVerify />} />
-          <Route path="/resetpassword" element={<ResetPassword />} />
+          <Route path="/Resetpassword" element={<ResetPassword />} />
       </Routes>
     </div>
   )
