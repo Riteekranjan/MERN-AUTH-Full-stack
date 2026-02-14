@@ -12,7 +12,7 @@ const app = express();
 const PORT = process.env.PORT || 5000
 connectDB();
 
-const allowedOrigin =['http://localhost:5174','https://mern-auth-frontend-riteekranjan.vercel.app/'];
+const allowedOrigin =process.env.CLIENT_URL || 'http://localhost:5174';
 app.use(express.json());
 app.use(cookieParser());  
   
@@ -27,8 +27,6 @@ app.get('/',(req,res)=>{
 })
 app.use('/api/auth', authRouter);
 app.use('/api/user', userRouter);
-app.listen(PORT,()=>{
-    console.log(`Server is running on port ${PORT}`);
-})
+export default app;
 
 
