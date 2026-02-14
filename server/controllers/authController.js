@@ -35,7 +35,7 @@ export const register = async (req, res) => {
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
 
-    // 🔹 Email should not break signup
+    //  Email should not break signup
     
       const mailOptions = {
         from: process.env.SENDER_EMAIL,
@@ -134,7 +134,7 @@ export const login = async (req, res) => {
             }
    
     export const verifyEmail = async (req, res) => {
-              const userId = req.userId;   // ✅ from token
+              const userId = req.userId;   
               const { otp } = req.body;
               if(!userId || !otp) {
                   return res.json({success: false, message: "missing details"});
