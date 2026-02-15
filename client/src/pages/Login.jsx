@@ -1,7 +1,7 @@
 
 import { useState } from 'react'
 import { assets } from '../assets/assets'
-import { useNavigate } from 'react-router-dom'
+import { data, useNavigate } from 'react-router-dom'
 import { useContext } from 'react'
 import { AppContext } from '../context/AppContext'
 import { toast } from 'react-toastify'
@@ -29,7 +29,7 @@ const onSubmitHandler = async (e) => {
            if(data.success){
             setIsLoggedIn(true)
             getUserData()
-            navigate('/');        
+            navigate('/')        
         }else{
            toast.error(error.message)
           } 
@@ -42,7 +42,7 @@ const onSubmitHandler = async (e) => {
           getUserData()
           navigate('/');        
       }else{
-        toast.error(error.message)
+        toast.error(data.message)
       }
     }
     }catch (error) {

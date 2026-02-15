@@ -1,7 +1,7 @@
-import express from 'express';
-import 'dotenv/config';
-import cookieParser from 'cookie-parser';
-import cors from 'cors';
+import express from 'express'
+import 'dotenv/config'
+import cookieParser from 'cookie-parser'
+import cors from 'cors'
 
 
 import connectDB from './config/mongodb.js';
@@ -18,12 +18,24 @@ const allowedOrigin = process.env.CLIENT_URL;
 app.use(express.json());
 app.use(cookieParser());  
   
+// app.use(
+//   cors({
+//     origin: allowedOrigin || true,
+//     credentials: true,
+//   })
+// );
+
+
 app.use(
   cors({
-    origin: allowedOrigin || true,
+    origin: [
+      process.env.CLIENT_URL
+    ],
     credentials: true,
   })
 );
+
+
 
 // API endpoint 
 app.get('/',(req,res)=>{
