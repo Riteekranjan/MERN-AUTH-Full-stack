@@ -2,7 +2,11 @@
 .DS_Store
 
 # Environment
+
+# Env files
 .env
+client/.env
+server/.env
 
 # Node
 node_modules/
