@@ -17,6 +17,7 @@ const [email,setEmail] = useState('')
 const [password,setPassword] = useState('') 
 const [name,setName] = useState('')
 
+
 const onSubmitHandler = async (e) => {
   try {
     e.preventDefault();
@@ -24,19 +25,21 @@ const onSubmitHandler = async (e) => {
 
       if(state==='Sign Up'){
            const {data} = await axios.post(backendUrL + '/api/auth/register',{
-            name,email,password
-          })
+            name,email,password},
+            { withCredentials: true }
+        )
            if(data.success){
             setIsLoggedIn(true)
             getUserData()
             navigate('/')        
         }else{
-           toast.error(error.message)
+           toast.error(data.message)
           } 
       } else{
-        const {data} = await axios.post(backendUrL + '/api/auth/login',{
-          email,password
-        })
+        const {data} = await axios.post(backendUrL + '/api/auth/login',
+         {email,password},
+         { withCredentials: true }
+        )
          if(data.success){
           setIsLoggedIn(true)
           getUserData()
