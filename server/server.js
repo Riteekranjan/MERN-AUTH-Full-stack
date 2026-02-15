@@ -9,26 +9,37 @@ import authRouter from './routes/authRoutes.js';
 import userRouter from './routes/userRoute.js';
 
 const app = express();
-const PORT = process.env.PORT || 5000
+const PORT = process.env.PORT || 5000;
 connectDB();
 
 
-const allowedOrigin =process.env.CLIENT_URL;
+const allowedOrigin = process.env.CLIENT_URL;
+
 app.use(express.json());
 app.use(cookieParser());  
   
-app.use(cors({origin:allowedOrigin, credentials:true}));
-
-
-
+app.use(
+  cors({
+    origin: allowedOrigin || true,
+    credentials: true,
+  })
+);
 
 // API endpoint 
 app.get('/',(req,res)=>{
     res.send("API is running  ");
-})
+});
+
 app.use('/api/auth', authRouter);
 app.use('/api/user', userRouter);
+
+if(!process.env.vercel){
 app.listen(PORT,()=>{
     console.log(`Server is running on port ${PORT}`);
 });
+}
+export default app;
+
+
+
 
