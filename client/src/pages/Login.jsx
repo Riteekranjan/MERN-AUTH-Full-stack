@@ -24,8 +24,8 @@ const onSubmitHandler = async (e) => {
     axios.defaults.withCredentials = true
 
       if(state==='Sign Up'){
-           const {data} = await axios.post(backendUrL + '/api/auth/register',{
-            name,email,password},
+           const {data} = await axios.post(`${backendUrL}/api/auth/register`,
+            {name,email,password},
             { withCredentials: true }
         )
            if(data.success){
@@ -36,7 +36,7 @@ const onSubmitHandler = async (e) => {
            toast.error(data.message)
           } 
       } else{
-        const {data} = await axios.post(backendUrL + '/api/auth/login',
+        const {data} = await axios.post(`${backendUrL}/api/auth/login`,
          {email,password},
          { withCredentials: true }
         )

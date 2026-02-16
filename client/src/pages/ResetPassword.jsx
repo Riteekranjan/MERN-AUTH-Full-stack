@@ -40,7 +40,7 @@ function ResetPassword() {
       const onSubmitEmail = async (e)=>{
         try{
                 e.preventDefault();
-                const {data}= await axios.post(backendUrL+'/api/auth/send-reset-otp',
+                const {data}= await axios.post(`${backendUrL}/api/auth/send-reset-otp`,
                   {email},{ withCredentials: true });
                   data.success ? toast.success(data.message) : toast.error(data.message)
                   data.success && setIsEmailSent(true)
@@ -64,7 +64,7 @@ function ResetPassword() {
   console.log("OTP:", otp);
   console.log("Password:", NewPassword);
             try{
-                  const {data} = await axios.post(backendUrL+'/api/auth/reset-password',
+                  const {data} = await axios.post(`${backendUrL}/api/auth/reset-password`,
                   { email, otp, newPassword: NewPassword },{ withCredentials: true });
                   data.success ? toast.success(data.message) : toast.error(data.message)
                   data.success && navigate('/login')
