@@ -10,21 +10,10 @@ import userRouter from './routes/userRoute.js';
 
 const app = express();
 const PORT = process.env.PORT || 5000;
-connectDB();
-
-
-const allowedOrigin = process.env.CLIENT_URL;
+ await connectDB();
 
 app.use(express.json());
 app.use(cookieParser());  
-  
-// app.use(
-//   cors({
-//     origin: allowedOrigin || true,
-//     credentials: true,
-//   })
-// );
-
 
 app.use(
   cors({
@@ -34,8 +23,6 @@ app.use(
     credentials: true,
   })
 );
-
-
 
 // API endpoint 
 app.get('/',(req,res)=>{
