@@ -13,9 +13,9 @@ import userAuth from '../middleware/userAuth.js';
  authRouter.post("/logout", logout);
  authRouter.post("/send-verification-otp", userAuth,sendVerificationOtp); 
  authRouter.post("/verify-email",userAuth,verifyEmail); 
- authRouter.post("/is-authenticated", userAuth, isAuthenticated); 
- authRouter.post("/send-reset-otp", userAuth, sendResetOtp);
- authRouter.post("/reset-password", userAuth, resetPassword);
+ authRouter.get("/is-authenticated", userAuth, isAuthenticated); 
+ authRouter.post("/send-reset-otp", sendResetOtp);
+ authRouter.post("/reset-password", resetPassword);
 
 export default authRouter;
 

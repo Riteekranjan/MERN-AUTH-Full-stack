@@ -1,10 +1,10 @@
 import jwt from 'jsonwebtoken';
 
 const userAuth = (req, res, next) => {
-      const token = req.cookies?.token;
-
+     const {token} = req.cookies ;
+    
     if(!token) {
-        return res.json({ success: false, message: 'Unauthorized: No token provided 1' });
+        return res.json({ success: false, message: 'Unauthorized: No token provided in userAuth middleware' });
     }
 
     try {

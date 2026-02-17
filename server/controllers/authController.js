@@ -3,13 +3,7 @@ import jwt from "jsonwebtoken";
 import userModel from "../models/UserModel.js";
 import transporter from "../config/nodemailer.js";
 
-const generateToken = (userId) => {
-   if (!process.env.JWT_SECRET) {
-    throw new Error("JWT_SECRET is not configured");
-  }
-  const payload = { userId };
-    return jwt.sign(payload, process.env.JWT_SECRET, {expiresIn: "7d"});
-}
+
 
 export const register = async (req, res) => {
   const { name, email, password } = req.body;
@@ -27,23 +21,21 @@ export const register = async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, 10);
     const user = new userModel({ name, email, password: hashedPassword });
     await user.save();
-     
 
-    const token = generateToken(user._id.toString());
-    // const token = jwt.sign(
-    //   { id: user._id },
-    //   process.env.JWT_SECRET,
-    //   { expiresIn: "7d" }
-    // );
+    const token = jwt.sign(
+      { id: user._id },
+      process.env.JWT_SECRET,
+      { expiresIn: "7d" }
+    );
 
     res.cookie("token", token, {
       httpOnly: true,
-      secure: true,
-      sameSite: 'none',
+      secure: process.env.NODE_ENV === "production",
+      sameSite: process.env.NODE_ENV === "production" ? "none" : "strict",
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
 
-    //  Email should not break signup
+    // 🔹 Email should not break signup
     
       const mailOptions = {
         from: process.env.SENDER_EMAIL,
@@ -65,7 +57,6 @@ Your account has been created successfully.
 };
 
 
-
 export const login = async (req, res) => {
     const { email, password } = req.body;
     if(!email || !password) {
@@ -80,14 +71,15 @@ export const login = async (req, res) => {
             if(!ismatch) {
                 return res.json({success: false, message: 'invalid password'});
             }
-            const token = generateToken(user._id.toString());
-            res.cookie('token', token, {
-                   httpOnly: true,
-                   secure: true,   
-                   sameSite: 'none',   // Required for cross-domain
-                   maxAge: 7 * 24 * 60 * 60 * 1000,
-              });
-            return res.json({success: true});
+            const token = jwt.sign({id: user._id}, process.env.JWT_SECRET, 
+                     {expiresIn: "7d"});
+            res.cookie( 'token', token , 
+                {httpOnly: true,
+                 secure : process.env.NODE_ENV === 'production',
+                    sameSite:  'none',
+                    maxAge: 7*24*60*60*1000, // 7 days   
+            });
+            return res.json({success: true, token, message: "Login successful"});
 
         }
             catch (error) {
@@ -101,8 +93,8 @@ export const login = async (req, res) => {
     try{
         res.clearCookie('token',{
             httpOnly: true,
-            secure : true,
-            sameSite:'none'
+            secure : process.env.NODE_ENV === 'production',
+            sameSite: process.env.NODE_ENV=== 'production' ? 'none' : 'strict',
         });
         return res.json({success:true, message:"Logout successful"});
     }
@@ -141,7 +133,7 @@ export const login = async (req, res) => {
             }
    
     export const verifyEmail = async (req, res) => {
-              const userId = req.userId;   
+              const userId = req.userId;   // ✅ from token
               const { otp } = req.body;
               if(!userId || !otp) {
                   return res.json({success: false, message: "missing details"});
@@ -157,6 +149,7 @@ export const login = async (req, res) => {
                   if(user.verifyOtpExpiryAt < Date.now()) {
                       return res.json({success: false, message: "otp expired"});
                   }
+                  
                   user.isAccountVerified = true;
                   user.verifyOtp = '';
                   user.verifyOtpExpiryAt = 0;
